@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Kotlin App</string>
+    <string name="btn_show">Show Email</string>
+    <string name="title">Enter your email</string>
+    <string name="hint_email">Enter your email</string>
+    <string name="resultText" ></string>
 </resources>
