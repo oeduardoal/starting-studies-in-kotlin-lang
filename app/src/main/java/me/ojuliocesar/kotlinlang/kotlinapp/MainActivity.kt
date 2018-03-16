@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         var enterEmail = enterEmail.text
 
-        btnShow.setOnClickListener{ resultText }
+        btnShow.setOnClickListener{ resultText.text = enterEmail }
 
 
     }
