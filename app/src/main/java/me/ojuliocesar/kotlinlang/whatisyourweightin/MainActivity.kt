@@ -19,9 +19,15 @@ class MainActivity : AppCompatActivity() {
         //Get on listiner btn
         showWeightBtn.setOnClickListener {
 
-            var result = calculateWeight(weight.toString().toDouble())
+            if (weight.toString().isEmpty()){
 
-            resultView.text = "You weight " + result.toString() + " on Mars"
+                resultView.text = "Please, enter a value weight."
+
+            }else{
+                var result = calculateWeight(weight.toString().toDouble())
+
+                resultView.text = "You weight " + result.toString() + " on Mars"
+            }
 
 
         }
