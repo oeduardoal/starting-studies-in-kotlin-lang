@@ -2,6 +2,7 @@ package me.ojuliocesar.kotlinlang.whatisyourweightin
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.widget.CheckBox
 import kotlinx.android.synthetic.main.activity_main.*
@@ -18,20 +19,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
 
         //show our magic
-        var weight = enterWeight.text;
+//        var weight = enterWeight.text;
 
         //Get on listiner btn
         showWeightBtn.setOnClickListener {
 
-            if (weight.toString().isEmpty()){
+           // if (weight.toString().isEmpty()){
 
-                resultView.text = "Please, enter a value weight."
+             //   resultView.text = "Please, enter a value weight."
 
-            }else{
-                var result = calculateWeight(weight.toString().toDouble())
+            //}else{
+            //    var result = calculateWeight(weight.toString().toDouble())
 
-                resultView.text = "You weight " + result.toString() + " on Mars"
-            }
+                //resultView.text = "You weight " + result.toString() + " on Mars"
+           // }
 
 
         }
@@ -45,18 +46,63 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         v as CheckBox
         var isChecked: Boolean = v.isChecked
+        var weight = enterWeight.text
+
 
         when(v.id){
-            R.id.marsCheckbox -> if (isChecked) { resultView.text = "Mars checked" } else { resultView.text = "Mars unchecked"  }
-            R.id.venusCheckbox -> if (isChecked) { resultView.text = "Venus checked" } else { resultView.text = "Venus unchecked"  }
-            R.id.jupiterCheckbox -> if (isChecked) { resultView.text = "Jupiter checked" } else { resultView.text = "Jupiter unchecked"  }
+            R.id.marsCheckbox -> if (isChecked && !TextUtils.isEmpty(enterWeight.text.toString())) {
+                calculateWeight(weight.toString().toDouble(), v)
+                venusCheckbox.isChecked = false
+                jupiterCheckbox.isChecked = false
+            } else {
+                resultView.text = "Enter a value weight"
+            }
+            R.id.venusCheckbox -> if (isChecked && !TextUtils.isEmpty(enterWeight.text.toString())) {
+                calculateWeight(weight.toString().toDouble(), v)
+                marsCheckbox.isChecked = false
+                jupiterCheckbox.isChecked = false
+            } else {
+                resultView.text = "Enter a value weight"
+            }
+            R.id.jupiterCheckbox -> if (isChecked && !TextUtils.isEmpty(enterWeight.text.toString())) {
+                calculateWeight(weight.toString().toDouble(), v)
+                marsCheckbox.isChecked = false
+                venusCheckbox.isChecked = false
+            } else {
+                resultView.text = "Enter a value weight"
+            }
         }
     }
 
 
-    fun calculateWeight(userWeight: Double): Double { // 89.78
+    fun calculateWeight(userWeight: Double, checkBox: CheckBox){ // 89.78
+        var result: Double?
 
-        return userWeight * marsG
+
+        when(checkBox.id){
+            R.id.marsCheckbox -> {
+                result = userWeight * marsG
+                resultView.text = "Weight is " + result.format(2) + " on Mars"
+
+            }
+            R.id.venusCheckbox -> {
+                result = userWeight * venusG
+                resultView.text = "Weight is " + result.format(2) + " on Venus"
+
+            }
+            R.id.jupiterCheckbox -> {
+                result = userWeight * jupiterG
+                resultView.text = "Weight is " + result.format(2) + " on Jupiter"
+
+            }
+            else -> {
+                result = userWeight * marsG
+                resultView.text = "Weight is " + result.format(2) + " on Mars"
+            }
+        }
+
 
     }
+
+    fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
 }
